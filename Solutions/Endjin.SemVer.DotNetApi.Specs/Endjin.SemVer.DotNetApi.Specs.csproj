@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Would like to use netcoreapp2.1, but until ApiChange.Api supports netstd, we're stuck with netfx -->
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace />
+    <DebugType>Full</DebugType>
+    <IsPackable>false</IsPackable>
+    <NoWarn>SA1600;RCS1029</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Gherkin" Version="6.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="SpecFlow.NUnit.Runners" Version="3.3.74" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.3.74" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.msbuild" Version="2.9.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Endjin.SemVer.DotNetApi\Endjin.SemVer.DotNetApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Endjin\SemVer\ApiCompare\LibraryChangeTypeDetection.feature.cs">
+      <DependentUpon>LibraryChangeTypeDetection.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Endjin\SemVer\ApiCompare\LibraryComparison.feature.cs">
+      <DependentUpon>LibraryComparison.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Endjin\SemVer\DotNetApi\Specs\LibraryChangeTypeDetection.feature.cs">
+      <DependentUpon>LibraryChangeTypeDetection.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Endjin\SemVer\DotNetApi\Specs\LibraryComparison.feature.cs">
+      <DependentUpon>LibraryComparison.feature</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <Target Name="AfterUpdateFeatureFilesInProject">
+    <!-- include any generated SpecFlow files in the compilation of the project if not included yet -->
+    <ItemGroup>
+      <Compile Include="**\*.feature.cs" Exclude="@(Compile)" />
+    </ItemGroup>
+  </Target>
+  <Target Name="BeforeUpdateFeatureFilesInProject">
+    <PropertyGroup>
+      <RootNamespace></RootNamespace>
+    </PropertyGroup>
+  </Target>
+</Project>

@@ -139,7 +139,7 @@ namespace Endjin.SemVer.DotNetApi.Specs.CodeGeneration
 
             foreach (MethodGenerator mg in e.Methods)
             {
-                TypeSyntax returnType = mg.ReturnType == "void"
+                TypeSyntax returnType = mg.ReturnType == TestMethodsReturnTypes.Void
                     ? SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword))
                     : SyntaxFactory.ParseTypeName(mg.ReturnType);
                 MethodDeclarationSyntax method = SyntaxFactory
@@ -154,7 +154,7 @@ namespace Endjin.SemVer.DotNetApi.Specs.CodeGeneration
                     method = method.AddParameterListParameters(parameter);
                 }
 
-                BlockSyntax body = mg.ReturnType == "void"
+                BlockSyntax body = mg.ReturnType == TestMethodsReturnTypes.Void
                     ? SyntaxFactory.Block()
                     : SyntaxFactory.Block(SyntaxFactory.ReturnStatement(SyntaxFactory.DefaultExpression(returnType)));
 

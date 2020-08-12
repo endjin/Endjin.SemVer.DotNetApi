@@ -553,7 +553,7 @@ namespace Endjin.SemVer.DotNetApi.Specs
             (string name, string type)[] paramsRequired = GetParametersForSignatureType(signature);
             Assert.IsTrue(methods.Any(m =>
                 m.Name == methodName &&
-                returnType == (m.ReturnType?.FullName ?? "void") &&
+                returnType == (m.ReturnType?.FullName ?? TestMethodsReturnTypes.Void) &&
                 paramsRequired.SequenceEqual(m.Parameters.Select(p => (p.Name, p.Type.FullName)))));
         }
 
@@ -586,7 +586,7 @@ namespace Endjin.SemVer.DotNetApi.Specs
                 case TestMethodSignatureTypes.VoidNoParams:
                 case TestMethodSignatureTypes.VoidReturnStringParams:
                 case TestMethodSignatureTypes.VoidReturnStringAndIntParams:
-                    return "void";
+                    return TestMethodsReturnTypes.Void;
 
                 case TestMethodSignatureTypes.StringReturnNoParams:
                 case TestMethodSignatureTypes.StringReturnStringAndIntParams:

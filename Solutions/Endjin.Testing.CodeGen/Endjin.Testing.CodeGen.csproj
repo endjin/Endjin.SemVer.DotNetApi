@@ -1,10 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
   
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <NoWarn>SA1600;RCS1029;CS1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- This library needs more thought before turning it into a nuget package. -->
+    <IsPackable>false</IsPackable>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageDescription>A class library for generating assemblies that can be used in version testing scenarios.</PackageDescription>
+    <PackageTags>semver-dotnetapi pr-autoflow devops</PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

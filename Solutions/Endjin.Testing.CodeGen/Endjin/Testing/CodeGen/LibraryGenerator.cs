@@ -1,8 +1,8 @@
-﻿// <copyright file="LibraryGenerator.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="LibraryGenerator.cs" company="Endjin Limited">
+// Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Endjin.SemVer.DotNetApi.Specs.CodeGeneration
+namespace Endjin.Testing.CodeGen
 {
     using System;
     using System.Collections.Generic;

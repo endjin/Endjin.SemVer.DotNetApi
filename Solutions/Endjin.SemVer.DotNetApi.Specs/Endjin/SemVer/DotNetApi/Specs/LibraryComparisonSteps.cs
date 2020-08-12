@@ -7,9 +7,9 @@ namespace Endjin.SemVer.DotNetApi.Specs
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Endjin.SemVer.DotNetApi.Specs.CodeGeneration;
     using Endjin.SemVer.DotNetApi.Specs.Utils;
     using Endjin.SemVer.DotNetApi.Versioning;
+    using Endjin.Testing.CodeGen;
     using NUnit.Framework;
     using TechTalk.SpecFlow;
 
@@ -560,8 +560,7 @@ namespace Endjin.SemVer.DotNetApi.Specs
         private static void HasConstructorWithMatchingSignature(IReadOnlyList<LibraryConstructor> constructors, TestMethodSignatureTypes signature)
         {
             (string name, string type)[] paramsRequired = GetParametersForSignatureType(signature);
-            Assert.IsTrue(constructors.Any(
-                c => paramsRequired.SequenceEqual(c.Parameters.Select(p => (p.Name, p.Type.FullName)))));
+            Assert.IsTrue(constructors.Any(c => paramsRequired.SequenceEqual(c.Parameters.Select(p => (p.Name, p.Type.FullName)))));
         }
 
         private static void HasReadWritePropertyOfType(IReadOnlyList<LibraryProperty> properties, string propertyName, string propertyType)

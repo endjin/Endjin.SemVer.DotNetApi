@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endjin.SemVer.DotNetApi.Cli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endjin.SemVer.DotNetApi.Specs", "Endjin.SemVer.DotNetApi.Specs\Endjin.SemVer.DotNetApi.Specs.csproj", "{2A12EFA6-D675-450F-8802-CB3F4C800094}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Endjin.Testing.CodeGen", "Endjin.Testing.CodeGen\Endjin.Testing.CodeGen.csproj", "{042AE2EE-6FC7-4BAB-95C7-A21E2D73C9A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{2A12EFA6-D675-450F-8802-CB3F4C800094}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A12EFA6-D675-450F-8802-CB3F4C800094}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A12EFA6-D675-450F-8802-CB3F4C800094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{042AE2EE-6FC7-4BAB-95C7-A21E2D73C9A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{042AE2EE-6FC7-4BAB-95C7-A21E2D73C9A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{042AE2EE-6FC7-4BAB-95C7-A21E2D73C9A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{042AE2EE-6FC7-4BAB-95C7-A21E2D73C9A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

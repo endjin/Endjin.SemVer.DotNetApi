@@ -1,15 +1,15 @@
-﻿// <copyright file="LibraryGeneratorSource.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="LibraryGeneratorSource.cs" company="Endjin Limited">
+// Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Endjin.SemVer.DotNetApi.Specs.CodeGeneration
+namespace Endjin.Testing.CodeGen
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
 
     /// <summary>
-    /// Generates libraries to test the <see cref="LibraryComparison"/> class.
+    /// Generates libraries to test the LibraryComparison class.
     /// </summary>
     /// <remarks>
     /// <para>

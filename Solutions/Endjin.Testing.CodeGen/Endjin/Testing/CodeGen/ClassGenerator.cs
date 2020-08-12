@@ -1,8 +1,8 @@
-﻿// <copyright file="ClassGenerator.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="ClassGenerator.cs" company="Endjin Limited">
+// Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Endjin.SemVer.DotNetApi.Specs.CodeGeneration
+namespace Endjin.Testing.CodeGen
 {
     using System.Collections.Generic;
 
@@ -57,7 +57,7 @@ namespace Endjin.SemVer.DotNetApi.Specs.CodeGeneration
             this.events.Add(new EventGenerator(eventName, eventType));
         }
 
-        internal void AddField(string fieldName, string fieldType)
+        public void AddField(string fieldName, string fieldType)
         {
             this.fields.Add(new FieldGenerator(fieldName, fieldType));
         }

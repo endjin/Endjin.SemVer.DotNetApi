@@ -6,6 +6,14 @@
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageId>Endjin.SemVer.DotNetApi</PackageId>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageDescription>A class library for comparing two NuGet packages and determining whether differences trigger SemVer Major, Minor or Patch changes</PackageDescription>
+    <PackageTags>semver-dotnetapi pr-autoflow devops</PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>RCS1029; SA1600; CS1591; SA1615, SA1602</NoWarn>
   </PropertyGroup>

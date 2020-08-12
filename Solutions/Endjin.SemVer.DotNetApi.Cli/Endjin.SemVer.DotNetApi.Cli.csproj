@@ -9,15 +9,18 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyName>ApiCompare</AssemblyName>
-    <PackageId>Endjin.SemVer.DotNetApi.Cli</PackageId>
     <Authors>endjin</Authors>
-    <Product>Endjin.SemVer.DotNetApi.Cli</Product>
+    <Product>Endjin.SemVer.DotNetApi</Product>
   </PropertyGroup>
 
   <PropertyGroup>
+    <PackageId>SemVer-DotNetApi-Cli</PackageId>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageDescription>semver-dotnetapi is a .NET Global Tools for comparing two NuGet packages and determining whether differences trigger SemVer Major, Minor or Patch changes</PackageDescription>
+    <PackageTags>semver-dotnetapi pr-autoflow devops</PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>semver-dotnetapi-cli</ToolCommandName>
+    <ToolCommandName>semver-dotnetapi</ToolCommandName>
   </PropertyGroup>
 
   <ItemGroup>

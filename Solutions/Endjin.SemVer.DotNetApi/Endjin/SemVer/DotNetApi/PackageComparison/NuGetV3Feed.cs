@@ -31,9 +31,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         /// </summary>
         /// <param name="feedUrl">The NuGet V3 feed URl.</param>
         /// <param name="nuGetLogger">The NuGet logger.</param>
-        public NuGetV3Feed(
-            string feedUrl,
-            ILogger nuGetLogger)
+        public NuGetV3Feed(string feedUrl, ILogger nuGetLogger)
         {
             this.feedUrl = feedUrl;
             this.nuGetLogger = nuGetLogger;
@@ -58,12 +56,16 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
             var packageVersions = new List<PackageIdentity>();
 
             IEnumeratorAsync<IPackageSearchMetadata> e = x.GetEnumeratorAsync();
+
             while (await e.MoveNextAsync().ConfigureAwait(false))
             {
                 PackageIdentity packageIdentity = e.Current.Identity;
                 Console.WriteLine("Item in feed: " + packageIdentity);
 
-                packageVersions.Add(packageIdentity);
+                if (packageIdentity.Id == packageId)
+                {
+                    packageVersions.Add(packageIdentity);
+                }
             }
 
             return packageVersions.Count == 0
@@ -78,6 +80,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                 .ConfigureAwait(false);
 
             var cacheContext = new SourceCacheContext();
+
             DownloadResourceResult downloadResult = await downloadResource.GetDownloadResourceResultAsync(
                 packageIdentity,
                 new PackageDownloadContext(cacheContext),
@@ -118,11 +121,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
             private readonly DownloadResourceResult downloadResult;
             private readonly SourceCacheContext cacheContext;
 
-            public PackageFromFeed(
-                PackageIdentity identity,
-                DownloadResourceResult downloadResult,
-                SourceCacheContext cacheContext,
-                ILogger nuGetLogger)
+            public PackageFromFeed(PackageIdentity identity, DownloadResourceResult downloadResult, SourceCacheContext cacheContext, ILogger nuGetLogger)
                 : base(identity, nuGetLogger)
             {
                 this.downloadResult = downloadResult;

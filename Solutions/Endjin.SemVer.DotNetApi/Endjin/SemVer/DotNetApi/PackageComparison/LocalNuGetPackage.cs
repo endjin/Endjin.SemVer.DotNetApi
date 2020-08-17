@@ -21,9 +21,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         /// </summary>
         /// <param name="packageInfo">The package information.</param>
         /// <param name="nuGetLogger">The NuGet logger.</param>
-        public LocalNuGetPackage(
-            LocalPackageInfo packageInfo,
-            ILogger nuGetLogger)
+        public LocalNuGetPackage(LocalPackageInfo packageInfo, ILogger nuGetLogger)
             : base(packageInfo.Identity, nuGetLogger)
         {
             this.packageInfo = packageInfo;
@@ -36,7 +34,6 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         }
 
         /// <inheritdoc/>
-        protected override PackageReaderBase GetPackageReader() =>
-            this.reader = this.reader ?? this.packageInfo.GetReader();
+        protected override PackageReaderBase GetPackageReader() => this.reader = this.reader ?? this.packageInfo.GetReader();
     }
 }

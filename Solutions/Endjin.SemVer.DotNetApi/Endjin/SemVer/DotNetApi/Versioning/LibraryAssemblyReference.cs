@@ -15,9 +15,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         /// </summary>
         /// <param name="shortName">The <see cref="ShortName"/>.</param>
         /// <param name="fullName">The <see cref="FullName"/>.</param>
-        public LibraryAssemblyReference(
-            string shortName,
-            string fullName)
+        public LibraryAssemblyReference(string shortName, string fullName)
         {
             this.ShortName = shortName;
             this.FullName = fullName;

@@ -22,10 +22,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         /// <param name="parameters">
         /// The method's <see cref="LibraryMethodBase.Parameters"/>, or <c>null</c> if it has none.
         /// </param>
-        public LibraryMethod(
-            string name,
-            LibraryTypeReference returnType = null,
-            IReadOnlyList<LibraryParameter> parameters = null)
+        public LibraryMethod(string name, LibraryTypeReference returnType = null, IReadOnlyList<LibraryParameter> parameters = null)
             : base(parameters)
         {
             this.Name = name ?? throw new ArgumentNullException(nameof(name));

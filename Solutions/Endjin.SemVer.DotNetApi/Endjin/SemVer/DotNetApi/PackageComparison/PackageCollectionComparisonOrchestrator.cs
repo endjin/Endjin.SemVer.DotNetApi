@@ -28,7 +28,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
     /// mess.
     /// </para>
     /// </remarks>
-    internal class PackageCollectionComparisonOrchestrator : IPackageCollectionComparisonOrchestrator
+    public class PackageCollectionComparisonOrchestrator : IPackageCollectionComparisonOrchestrator
     {
         private readonly INuGetFeedFactory feedFactory;
         private readonly INuGetLocalPackageEnumerator packageEnumerator;
@@ -38,33 +38,31 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         /// </summary>
         /// <param name="feedFactory">Source of NuGet feeds.</param>
         /// <param name="packageEnumerator">Enumerate local NuGet packages.</param>
-        public PackageCollectionComparisonOrchestrator(
-            INuGetFeedFactory feedFactory,
-            INuGetLocalPackageEnumerator packageEnumerator)
+        public PackageCollectionComparisonOrchestrator(INuGetFeedFactory feedFactory, INuGetLocalPackageEnumerator packageEnumerator)
         {
             this.feedFactory = feedFactory;
             this.packageEnumerator = packageEnumerator;
         }
 
         /// <inheritdoc/>
-        public async Task<bool> CompareAsync(string feedUrl, string packageFolder)
+        public async Task<bool> CompareAsync(Uri feedUri, DirectoryInfo packageDirectory)
         {
             bool rulesViolated = false;
 
-            INuGetFeed feed = this.feedFactory.GetV3Feed(feedUrl);
-            IEnumerable<INuGetPackage> packages = this.packageEnumerator.GetPackages(packageFolder);
+            INuGetFeed feed = this.feedFactory.GetV3Feed(feedUri.ToString());
+            IEnumerable<INuGetPackage> localPackages = this.packageEnumerator.GetPackages(packageDirectory.FullName);
 
-            foreach (INuGetPackage newPackage in packages)
+            foreach (INuGetPackage newPackage in localPackages)
             {
                 PackageIdentity thisPackageId = newPackage.Identity;
                 Console.WriteLine("Processing " + newPackage.Identity);
 
-                INuGetPublishedLibraryVersions publishedVersions = await feed.GetPublishedVersionsOfLibraryAsync(newPackage.Identity.Id)
-                    .ConfigureAwait(false);
+                INuGetPublishedLibraryVersions publishedVersions = await feed.GetPublishedVersionsOfLibraryAsync(newPackage.Identity.Id).ConfigureAwait(false);
 
                 ComponentChangeType changeType;
                 PackageIdentity predecessorId = null;
                 PackageIdentity latestVersionWithSameMajor = null;
+
                 if (publishedVersions == null)
                 {
                     Console.WriteLine($"No versions of {newPackage.Identity} have been published before.");
@@ -73,6 +71,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                 else
                 {
                     int latestPublishedMajorVersion = publishedVersions.LatestPublishedMajorVersion;
+
                     if (!publishedVersions.TryGetLatestVersionsWithMajorVersion(thisPackageId.Version.Major, out INuGetPublishedLibraryMinorVersions minorVersions))
                     {
                         // It appears that we're trying to build something with a Major version number never
@@ -86,6 +85,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                         // as the target package.
                         latestVersionWithSameMajor = minorVersions.LatestPublishedVersionWithSameMajor;
                         int thisMinorVersion = thisPackageId.Version.Minor;
+
                         if (thisMinorVersion > minorVersions.LatestPublishedMinorVersionWithSameMajor)
                         {
                             changeType = ComponentChangeType.MinorUpdate;
@@ -105,6 +105,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                             else
                             {
                                 int thisPatchVersion = thisPackageId.Version.Patch;
+
                                 if (thisPatchVersion > latestPatchWithSameMajorAndMinor.Version.Patch)
                                 {
                                     changeType = ComponentChangeType.BugfixUpdate;
@@ -123,6 +124,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                     }
 
                     SemanticVersionChange maximumAcceptableChange = SemanticVersionChange.None;
+
                     switch (changeType)
                     {
                         case ComponentChangeType.VersionAlreadyPublished:
@@ -161,6 +163,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                         INuGetPackage predecessorPackage = await feed.GetPackageAsync(predecessorId).ConfigureAwait(false);
                         SemanticVersionChange packageChange = await ComparePackages(predecessorPackage, newPackage).ConfigureAwait(false);
                         predecessorPackage.Dispose();
+
                         if (packageChange > maximumAcceptableChange)
                         {
                             Console.Error.WriteLine($"Package '{thisPackageId.Id}' makes changes requiring a '{packageChange}' version change. The predecessor version is {predecessorId.Version}, and the target version is {thisPackageId.Version}, which is only a '{maximumAcceptableChange}' change");
@@ -184,10 +187,8 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         {
             SemanticVersionChange biggestChangeSeen = SemanticVersionChange.None;
 
-            Dictionary<NuGetFramework, List<string>> predecessorItemsByFramework =
-                await predecessorPackage.GetLibraryItemsByFrameworkAsync().ConfigureAwait(false);
-            Dictionary<NuGetFramework, List<string>> newItemsByFramework =
-                await newPackage.GetLibraryItemsByFrameworkAsync().ConfigureAwait(false);
+            Dictionary<NuGetFramework, List<string>> predecessorItemsByFramework = await predecessorPackage.GetLibraryItemsByFrameworkAsync().ConfigureAwait(false);
+            Dictionary<NuGetFramework, List<string>> newItemsByFramework = await newPackage.GetLibraryItemsByFrameworkAsync().ConfigureAwait(false);
 
             bool targetFrameworksRemoved = predecessorItemsByFramework.Keys.Except(newItemsByFramework.Keys).Any();
 
@@ -213,6 +214,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
             {
                 List<string> targetItems = newItemsByFramework[framework];
                 bool libItemsRemoved = predecessorItems.Except(targetItems).Any();
+
                 if (libItemsRemoved)
                 {
                     // With this target framework, there's a library item that was present in the predecessor
@@ -222,6 +224,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                 }
 
                 bool libItemsAdded = targetItems.Except(predecessorItems).Any();
+
                 if (libItemsAdded)
                 {
                     // With this target framework, there's a library item in the target version that was not
@@ -230,9 +233,10 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                     biggestChangeSeen = biggestChangeSeen.AtLeast(SemanticVersionChange.Minor);
                 }
 
-                string workingFolder = Path.Combine(Path.GetTempPath(), @"Endjin\ApiCompare\" + Guid.NewGuid());
-                string predecessorFolder = workingFolder + @"\Before";
-                string targetFolder = workingFolder + @"\After";
+                string workingFolder = Path.Combine(Path.GetTempPath(), @"endjin\nupkgversion\" + Guid.NewGuid());
+                string predecessorFolder = workingFolder + @"\before";
+                string targetFolder = workingFolder + @"\after";
+
                 try
                 {
                     Directory.CreateDirectory(predecessorFolder);

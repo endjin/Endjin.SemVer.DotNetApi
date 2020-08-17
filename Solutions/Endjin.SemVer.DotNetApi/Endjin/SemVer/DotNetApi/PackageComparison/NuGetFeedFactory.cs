@@ -25,9 +25,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         /// Determines whether interactive authentication may be attempted when a NuGet feed
         /// requires authentication and no cached credentials are found.
         /// </param>
-        public NuGetFeedFactory(
-            IServiceProvider serviceProvider,
-            bool allowInteractiveAuthentication)
+        public NuGetFeedFactory(IServiceProvider serviceProvider, bool allowInteractiveAuthentication)
         {
             this.nuGetLogger = serviceProvider.GetRequiredService<NuGet.Common.ILogger>();
             this.UseDefaultCredentials(allowInteractiveAuthentication);
@@ -60,9 +58,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
             // This tells it to use your empty folder as the local package store, and this will stop it from using
             // the shared .nuget folder in your profile. This means that it will finally have no choice but to
             // download the package from the feed, at which point this will trigger authentication.
-            DefaultCredentialServiceUtility.SetupDefaultCredentialService(
-                this.nuGetLogger,
-                nonInteractive: !allowInteractiveAuthentication);
+            DefaultCredentialServiceUtility.SetupDefaultCredentialService(this.nuGetLogger, nonInteractive: !allowInteractiveAuthentication);
         }
     }
 }

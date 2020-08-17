@@ -14,9 +14,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         /// </summary>
         /// <param name="name">The event's <see cref="Name"/>.</param>
         /// <param name="type">The events's <see cref="Type"/>.</param>
-        public LibraryEvent(
-            string name,
-            LibraryTypeReference type)
+        public LibraryEvent(string name, LibraryTypeReference type)
         {
             this.Name = name;
             this.Type = type;

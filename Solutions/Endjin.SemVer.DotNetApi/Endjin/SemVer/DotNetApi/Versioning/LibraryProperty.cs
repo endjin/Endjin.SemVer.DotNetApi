@@ -14,9 +14,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         /// </summary>
         /// <param name="name">The property's <see cref="Name"/>.</param>
         /// <param name="type">The property's <see cref="Type"/>.</param>
-        public LibraryProperty(
-            string name,
-            LibraryTypeReference type)
+        public LibraryProperty(string name, LibraryTypeReference type)
         {
             this.Name = name;
             this.Type = type;

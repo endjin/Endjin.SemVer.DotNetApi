@@ -18,8 +18,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         /// <param name="parameters">
         /// The method's <see cref="Parameters"/>, or <c>null</c> if it has none.
         /// </param>
-        protected LibraryMethodBase(
-            IReadOnlyList<LibraryParameter> parameters = null)
+        protected LibraryMethodBase(IReadOnlyList<LibraryParameter> parameters = null)
         {
             this.Parameters = parameters ?? LibraryParameter.None;
         }

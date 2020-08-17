@@ -18,10 +18,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         /// <param name="typesAdded">The <see cref="TypesAdded"/>.</param>
         /// <param name="typesChanged">The <see cref="TypesChanged"/>.</param>
         /// <param name="typesRemoved">The <see cref="TypesRemoved"/>.</param>
-        public LibraryChanges(
-            IReadOnlyList<LibraryType> typesAdded,
-            IReadOnlyList<LibraryType> typesChanged,
-            IReadOnlyList<LibraryType> typesRemoved)
+        public LibraryChanges(IReadOnlyList<LibraryType> typesAdded, IReadOnlyList<LibraryType> typesChanged, IReadOnlyList<LibraryType> typesRemoved)
         {
             foreach (LibraryType t in typesAdded)
             {

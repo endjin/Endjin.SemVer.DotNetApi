@@ -10,7 +10,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
     /// Provides the ability to enumerate over a collection of packages stored on the local file
     /// system.
     /// </summary>
-    internal interface INuGetLocalPackageEnumerator
+    public interface INuGetLocalPackageEnumerator
     {
         /// <summary>
         /// Gets all of the NuGet packages in a folder.

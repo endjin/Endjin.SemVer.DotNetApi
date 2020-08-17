@@ -17,8 +17,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         /// <param name="parameters">
         /// The constructor's <see cref="LibraryMethodBase.Parameters"/>, or <c>null</c> if it has none.
         /// </param>
-        public LibraryConstructor(
-            IReadOnlyList<LibraryParameter> parameters = null)
+        public LibraryConstructor(IReadOnlyList<LibraryParameter> parameters = null)
             : base(parameters)
         {
         }

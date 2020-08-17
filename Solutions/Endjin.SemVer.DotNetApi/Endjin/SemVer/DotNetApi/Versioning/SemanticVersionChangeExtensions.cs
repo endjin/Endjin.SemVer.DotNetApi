@@ -17,7 +17,6 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         /// <returns>
         /// The highest of the two <see cref="SemanticVersionChange"/>s.
         /// </returns>
-        public static SemanticVersionChange AtLeast(this SemanticVersionChange left, SemanticVersionChange right) =>
-            left > right ? left : right;
+        public static SemanticVersionChange AtLeast(this SemanticVersionChange left, SemanticVersionChange right) => left > right ? left : right;
     }
 }

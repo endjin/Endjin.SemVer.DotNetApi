@@ -7,7 +7,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
     /// <summary>
     /// A source of <see cref="INuGetFeed"/> instances.
     /// </summary>
-    internal interface INuGetFeedFactory
+    public interface INuGetFeedFactory
     {
         /// <summary>
         /// Gets a feed for the specified NuGet v3 feed URL.

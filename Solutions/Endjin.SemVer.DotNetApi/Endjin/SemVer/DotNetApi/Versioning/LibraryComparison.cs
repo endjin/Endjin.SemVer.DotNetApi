@@ -23,9 +23,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         /// <returns>
         /// A <see cref="LibraryChanges"/> describing the changes.
         /// </returns>
-        public static LibraryChanges DetectChanges(
-            string pathToOldAssembly,
-            string pathToNewAssembly)
+        public static LibraryChanges DetectChanges(string pathToOldAssembly, string pathToNewAssembly)
         {
             var ad = new AssemblyDiffer(pathToOldAssembly, pathToNewAssembly);
 
@@ -44,6 +42,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
             AssemblyDiffCollection diffCollection = ad.GenerateTypeDiff(qa);
 
             var referenceCache = new ReferenceCache();
+
             var typesAdded = diffCollection
                 .AddedRemovedTypes
                 .Where(t => t.Operation.IsAdded)
@@ -64,10 +63,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
             return new LibraryChanges(typesAdded, typesChanged, typesRemoved);
         }
 
-        private static LibraryType MakeLibraryType(
-            TypeDefinition td,
-            bool add,
-            ReferenceCache referenceCache)
+        private static LibraryType MakeLibraryType(TypeDefinition td, bool add, ReferenceCache referenceCache)
         {
             List<LibraryConstructor> constructors = MakeLibraryConstructorFromDefinitions(td.Methods, referenceCache);
             List<LibraryMethod> methods = MakeLibraryMethodsFromDefinitions(td.Methods, referenceCache);
@@ -89,9 +85,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
                 fieldsRemoved: !add ? fields : null);
         }
 
-        private static LibraryType MakeLibraryTypeFromDiff(
-            TypeDiff td,
-            ReferenceCache referenceCache)
+        private static LibraryType MakeLibraryTypeFromDiff(TypeDiff td, ReferenceCache referenceCache)
         {
             return new LibraryType(
                 td.TypeV1.FullName,
@@ -107,17 +101,12 @@ namespace Endjin.SemVer.DotNetApi.Versioning
                 fieldsRemoved: MakeLibraryFieldsFromDiff(td, referenceCache, added: false));
         }
 
-        private static List<LibraryConstructor> MakeLibraryConstructorFromDiff(
-            TypeDiff td,
-            ReferenceCache referenceCache,
-            bool added)
+        private static List<LibraryConstructor> MakeLibraryConstructorFromDiff(TypeDiff td, ReferenceCache referenceCache, bool added)
         {
             return MakeLibraryConstructorFromDefinitions(FromDiff(td.Methods, added), referenceCache);
         }
 
-        private static List<LibraryConstructor> MakeLibraryConstructorFromDefinitions(
-            IEnumerable<MethodDefinition> methods,
-            ReferenceCache referenceCache)
+        private static List<LibraryConstructor> MakeLibraryConstructorFromDefinitions(IEnumerable<MethodDefinition> methods, ReferenceCache referenceCache)
         {
             return methods
                 .Where(md => md.IsConstructor)
@@ -125,17 +114,12 @@ namespace Endjin.SemVer.DotNetApi.Versioning
                 .ToList();
         }
 
-        private static List<LibraryMethod> MakeLibraryMethodsFromDiff(
-            TypeDiff td,
-            ReferenceCache referenceCache,
-            bool added)
+        private static List<LibraryMethod> MakeLibraryMethodsFromDiff(TypeDiff td, ReferenceCache referenceCache, bool added)
         {
             return MakeLibraryMethodsFromDefinitions(FromDiff(td.Methods, added), referenceCache);
         }
 
-        private static List<LibraryMethod> MakeLibraryMethodsFromDefinitions(
-            IEnumerable<MethodDefinition> methods,
-            ReferenceCache referenceCache)
+        private static List<LibraryMethod> MakeLibraryMethodsFromDefinitions(IEnumerable<MethodDefinition> methods, ReferenceCache referenceCache)
         {
             return methods
                 .Where(md => !md.IsSpecialName)
@@ -146,10 +130,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
                 .ToList();
         }
 
-        private static List<LibraryProperty> MakeLibraryPropertiesFromDiff(
-            TypeDiff td,
-            ReferenceCache referenceCache,
-            bool added)
+        private static List<LibraryProperty> MakeLibraryPropertiesFromDiff(TypeDiff td, ReferenceCache referenceCache, bool added)
         {
             // Frustratingly, ApiChange.Api's TypeDiff doesn't have a Properties property, so we
             // have to infer what properties were added or removed by looking in Methods. (It does
@@ -167,9 +148,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
             return MakeLibraryPropertiesFromDefinitions(properties, referenceCache);
         }
 
-        private static List<LibraryProperty> MakeLibraryPropertiesFromDefinitions(
-            IEnumerable<PropertyDefinition> properties,
-            ReferenceCache referenceCache)
+        private static List<LibraryProperty> MakeLibraryPropertiesFromDefinitions(IEnumerable<PropertyDefinition> properties, ReferenceCache referenceCache)
         {
             return properties
                 .Select(d => new LibraryProperty(
@@ -178,17 +157,12 @@ namespace Endjin.SemVer.DotNetApi.Versioning
                 .ToList();
         }
 
-        private static List<LibraryEvent> MakeLibraryEventsFromDiff(
-            TypeDiff td,
-            ReferenceCache referenceCache,
-            bool added)
+        private static List<LibraryEvent> MakeLibraryEventsFromDiff(TypeDiff td, ReferenceCache referenceCache, bool added)
         {
             return MakeLibraryEventsFromDefinitions(FromDiff(td.Events, added), referenceCache);
         }
 
-        private static List<LibraryEvent> MakeLibraryEventsFromDefinitions(
-            IEnumerable<EventDefinition> events,
-            ReferenceCache referenceCache)
+        private static List<LibraryEvent> MakeLibraryEventsFromDefinitions(IEnumerable<EventDefinition> events, ReferenceCache referenceCache)
         {
             return events
                 .Select(d => new LibraryEvent(
@@ -197,17 +171,12 @@ namespace Endjin.SemVer.DotNetApi.Versioning
                 .ToList();
         }
 
-        private static List<LibraryField> MakeLibraryFieldsFromDiff(
-            TypeDiff td,
-            ReferenceCache referenceCache,
-            bool added)
+        private static List<LibraryField> MakeLibraryFieldsFromDiff(TypeDiff td, ReferenceCache referenceCache, bool added)
         {
             return MakeLibraryFieldsFromDefinitions(FromDiff(td.Fields, added), referenceCache);
         }
 
-        private static List<LibraryField> MakeLibraryFieldsFromDefinitions(
-            IEnumerable<FieldDefinition> fields,
-            ReferenceCache referenceCache)
+        private static List<LibraryField> MakeLibraryFieldsFromDefinitions(IEnumerable<FieldDefinition> fields, ReferenceCache referenceCache)
         {
             // The type comparer seems to report private fields if they are compiler-generated ones
             // associated with non-private events or properties. This seems surprising, and may be
@@ -222,9 +191,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
                 .ToList();
         }
 
-        private static List<LibraryParameter> MakeParameters(
-            IEnumerable<ParameterDefinition> parameterDefinitions,
-            ReferenceCache referenceCache)
+        private static List<LibraryParameter> MakeParameters(IEnumerable<ParameterDefinition> parameterDefinitions, ReferenceCache referenceCache)
         {
             return parameterDefinitions
                 .Select(pd => new LibraryParameter(pd.Name, referenceCache.GetTypeReference(pd.ParameterType)))
@@ -244,6 +211,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
             {
                 LibraryAssemblyReference assemblyReference = this.GetAssemblyReference((AssemblyNameReference)typeReference.Scope);
                 (LibraryAssemblyReference lib, string fullName) key = (assemblyReference, typeReference.FullName);
+
                 if (!this.typeRefs.TryGetValue(key, out LibraryTypeReference result))
                 {
                     result = assemblyReference.ShortName == "mscorlib" && typeReference.FullName == "System.Void"

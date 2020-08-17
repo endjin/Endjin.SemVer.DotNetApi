@@ -24,9 +24,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         /// </summary>
         /// <param name="identity">The <see cref="Identity"/>.</param>
         /// <param name="nuGetLogger">NuGet library logger.</param>
-        protected NuGetPackageBase(
-            PackageIdentity identity,
-            ILogger nuGetLogger)
+        protected NuGetPackageBase(PackageIdentity identity, ILogger nuGetLogger)
         {
             this.Identity = identity;
             this.NuGetLogger = nuGetLogger;
@@ -59,8 +57,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         public async Task<Dictionary<NuGetFramework, List<string>>> GetLibraryItemsByFrameworkAsync()
         {
             PackageReaderBase packageReader = this.GetPackageReader();
-            IEnumerable<FrameworkSpecificGroup> libItems =
-                await packageReader.GetLibItemsAsync(CancellationToken.None).ConfigureAwait(false);
+            IEnumerable<FrameworkSpecificGroup> libItems = await packageReader.GetLibItemsAsync(CancellationToken.None).ConfigureAwait(false);
             return libItems.ToDictionary(x => x.TargetFramework, x => x.Items.ToList());
         }
 
@@ -91,6 +88,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
             else
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
+
                 using (FileStream output = File.Create(targetPath))
                 {
                     fileStream.CopyTo(output);

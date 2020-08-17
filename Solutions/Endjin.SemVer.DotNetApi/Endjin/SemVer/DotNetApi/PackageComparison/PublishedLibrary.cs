@@ -103,8 +103,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
             /// <param name="publishedVersions">
             /// The minor versions that have been published.
             /// </param>
-            internal MinorVersions(
-                IEnumerable<PackageIdentity> publishedVersions)
+            internal MinorVersions(IEnumerable<PackageIdentity> publishedVersions)
             {
                 this.latestPatchesByMinor = publishedVersions
                     .GroupBy(v => v.Version.Minor)

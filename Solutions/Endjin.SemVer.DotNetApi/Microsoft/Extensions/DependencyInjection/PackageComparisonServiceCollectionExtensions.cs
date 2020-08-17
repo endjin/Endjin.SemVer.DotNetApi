@@ -5,6 +5,7 @@
 namespace Microsoft.Extensions.DependencyInjection
 {
     using Endjin.SemVer.DotNetApi.PackageComparison;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// DI configuration for package comparison services.

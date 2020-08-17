@@ -10,7 +10,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
     /// <summary>
     /// Provides access to information from a NuGet feed.
     /// </summary>
-    internal interface INuGetFeed
+    public interface INuGetFeed
     {
         /// <summary>
         /// Gets information about all versions of a published library from the feed, if any exist.

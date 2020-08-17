@@ -13,7 +13,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
     /// <summary>
     /// Provides access to information about a NuGet package.
     /// </summary>
-    internal interface INuGetPackage : IDisposable
+    public interface INuGetPackage : IDisposable
     {
         /// <summary>
         /// Gets the NuGet identity of this package.

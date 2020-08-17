@@ -14,9 +14,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         /// </summary>
         /// <param name="name">The field's <see cref="Name"/>.</param>
         /// <param name="type">The field's <see cref="Type"/>.</param>
-        public LibraryField(
-            string name,
-            LibraryTypeReference type)
+        public LibraryField(string name, LibraryTypeReference type)
         {
             this.Name = name;
             this.Type = type;

@@ -17,9 +17,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         /// </summary>
         /// <param name="assembly">The <see cref="Assembly"/>.</param>
         /// <param name="fullName">The <see cref="FullName"/>.</param>
-        public LibraryTypeReference(
-            LibraryAssemblyReference assembly,
-            string fullName)
+        public LibraryTypeReference(LibraryAssemblyReference assembly, string fullName)
         {
             this.Assembly = assembly;
             this.FullName = fullName;

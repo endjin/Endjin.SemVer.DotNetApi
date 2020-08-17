@@ -4,17 +4,26 @@
 
 namespace Endjin.SemVer.DotNetApi.Cli
 {
+    using System;
+    using System.CommandLine.Parsing;
+    using System.Text;
     using System.Threading.Tasks;
-    using Endjin.SemVer.DotNetApi.Hosting;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Api Compare tool entry point.
     /// </summary>
     internal static class Program
     {
+        private static readonly ServiceCollection ServiceCollection = new ServiceCollection();
+
+        public static async Task<int> Main(string[] args)
+        {
+            Console.OutputEncoding = Encoding.UTF8;
+
+            return await new CommandLineParser(ServiceCollection).Create().InvokeAsync(args).ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Program entry point, called by System.CommandLine DragonFruit.
         /// </summary>
@@ -34,7 +43,7 @@ namespace Endjin.SemVer.DotNetApi.Cli
         /// <returns>
         /// A task that completes when the application has finished.
         /// </returns>
-        internal static async Task<int> Main(
+/*        internal static async Task<int> Main(
             string feedUrl,
             string packageFolder,
             bool interactive = false,
@@ -67,6 +76,6 @@ namespace Endjin.SemVer.DotNetApi.Cli
                 .ConfigureLogging(logging => logging.AddConsole());
 
             return await builder.RunInHostedCommandModeAsync();
-        }
+        }*/
     }
 }

@@ -21,7 +21,7 @@ namespace Endjin.SemVer.DotNetApi.Cli
     /// </remarks>
     internal class ApiCompareTool : IHostedCommand
     {
-        private readonly ApiCompareCommandArguments arguments;
+        private readonly CompareArguments arguments;
         private readonly IPackageCollectionComparisonOrchestrator orchestrator;
         private readonly ILogger<ApiCompareTool> logger;
 
@@ -32,7 +32,7 @@ namespace Endjin.SemVer.DotNetApi.Cli
         /// <param name="orchestrator">The orchestrator that does the underlying work.</param>
         /// <param name="logger">The logger.</param>
         public ApiCompareTool(
-            ApiCompareCommandArguments arguments,
+            CompareArguments arguments,
             IPackageCollectionComparisonOrchestrator orchestrator,
             ILogger<ApiCompareTool> logger)
         {
@@ -48,7 +48,7 @@ namespace Endjin.SemVer.DotNetApi.Cli
 
             try
             {
-                bool ok = await this.orchestrator.CompareAsync(this.arguments.FeedUrl, this.arguments.PackageFolder);
+                bool ok = await this.orchestrator.CompareAsync(this.arguments.PackageFeedUrl, this.arguments.PackageDirectory);
                 return ok ? 0 : 1;
             }
             catch (Exception x)

@@ -47,7 +47,7 @@ namespace Endjin.Testing.CodeGen
         {
             if (Directory.Exists(this.libGenPath))
             {
-               // Directory.Delete(this.libGenPath, true);
+                Directory.Delete(this.libGenPath, true);
             }
         }
 

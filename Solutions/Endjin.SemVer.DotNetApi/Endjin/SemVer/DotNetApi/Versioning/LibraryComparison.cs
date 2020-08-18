@@ -7,6 +7,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
     using System.Collections.Generic;
     using System.Linq;
     using Endjin.ApiChange.Api.Diff;
+    using Endjin.ApiChange.Api.Introspection;
     using Endjin.ApiChange.Api.Query;
     using Mono.Cecil;
 
@@ -25,7 +26,9 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         /// </returns>
         public static LibraryChanges DetectChanges(string pathToOldAssembly, string pathToNewAssembly)
         {
-            var ad = new AssemblyDiffer(pathToOldAssembly, pathToNewAssembly);
+            using AssemblyDefinition oldAssembly = AssemblyLoader.LoadCecilAssembly(pathToOldAssembly);
+            using AssemblyDefinition newAssembly = AssemblyLoader.LoadCecilAssembly(pathToNewAssembly);
+            var ad = new AssemblyDiffer(oldAssembly, newAssembly);
 
             var qa = new QueryAggregator();
             qa.TypeQueries.Add(new TypeQuery(TypeQueryMode.ApiRelevant));

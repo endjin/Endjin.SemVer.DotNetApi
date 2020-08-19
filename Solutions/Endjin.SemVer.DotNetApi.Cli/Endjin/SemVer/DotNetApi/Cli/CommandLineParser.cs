@@ -69,7 +69,7 @@ namespace Endjin.SemVer.DotNetApi.Cli
                     Arity = ArgumentArity.ExactlyOne,
                 });
 
-                cmd.AddArgument(new Argument<Uri>
+                cmd.AddArgument(new Argument<Uri>(getDefaultValue: () => new Uri("https://api.nuget.org/v3/index.json") )
                 {
                     Name = "package-feed-url",
                     Description = "Uri of the package feed to compare against.",

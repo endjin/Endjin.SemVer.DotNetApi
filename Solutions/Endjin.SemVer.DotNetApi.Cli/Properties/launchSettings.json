@@ -2,7 +2,7 @@
   "profiles": {
     "Endjin.SemVer.DotNetApi.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Temp\\NuGet https://api.nuget.org/v3/index.json false"
+      "commandLineArgs": "C:\\dev\\endjinoss\\corvus-dotnet\\Corvus.Tenancy\\Solutions\\temppack\\ https://api.nuget.org/v3/index.json false"
     }
   }
 }

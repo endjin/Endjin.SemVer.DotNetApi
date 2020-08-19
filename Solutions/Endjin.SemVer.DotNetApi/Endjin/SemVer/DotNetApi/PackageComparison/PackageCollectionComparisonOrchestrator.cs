@@ -12,6 +12,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
     using Endjin.SemVer.DotNetApi.Versioning;
     using NuGet.Frameworks;
     using NuGet.Packaging.Core;
+    using NuGet.Versioning;
 
     /// <summary>
     /// Orchestrates the process of inspecting a directory full of NuGet packages, and working out
@@ -60,8 +61,8 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                 INuGetPublishedLibraryVersions publishedVersions = await feed.GetPublishedVersionsOfLibraryAsync(newPackage.Identity.Id).ConfigureAwait(false);
 
                 ComponentChangeType changeType;
-                PackageIdentity predecessorId = null;
-                PackageIdentity latestVersionWithSameMajor = null;
+                NuGetVersion predecessorVersion = null;
+                NuGetVersion latestVersionWithSameMajor = null;
 
                 if (publishedVersions == null)
                 {
@@ -89,29 +90,29 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                         if (thisMinorVersion > minorVersions.LatestPublishedMinorVersionWithSameMajor)
                         {
                             changeType = ComponentChangeType.MinorUpdate;
-                            predecessorId = latestVersionWithSameMajor;
+                            predecessorVersion = latestVersionWithSameMajor;
                         }
                         else
                         {
-                            if (!minorVersions.TryGetLatestVersionWithMinorVersion(thisMinorVersion, out PackageIdentity latestPatchWithSameMajorAndMinor))
+                            if (!minorVersions.TryGetLatestVersionWithMinorVersion(thisMinorVersion, out NuGetVersion latestPatchWithSameMajorAndMinor))
                             {
                                 // It appears that we're trying to build something where the Major version has
                                 // been seen before, but this particular Major.Minor combination is new, and it
                                 // is lower than the latest version seen before.
                                 // (E.g., v2.0 and v2.2 have been published but we're now looking at v2.1.)
                                 changeType = ComponentChangeType.RetrogradeMinorVersionNumber;
-                                predecessorId = latestPatchWithSameMajorAndMinor;
+                                predecessorVersion = latestPatchWithSameMajorAndMinor;
                             }
                             else
                             {
                                 int thisPatchVersion = thisPackageId.Version.Patch;
 
-                                if (thisPatchVersion > latestPatchWithSameMajorAndMinor.Version.Patch)
+                                if (thisPatchVersion > latestPatchWithSameMajorAndMinor.Patch)
                                 {
                                     changeType = ComponentChangeType.BugfixUpdate;
-                                    predecessorId = latestPatchWithSameMajorAndMinor;
+                                    predecessorVersion = latestPatchWithSameMajorAndMinor;
                                 }
-                                else if (thisPatchVersion < latestPatchWithSameMajorAndMinor.Version.Patch)
+                                else if (thisPatchVersion < latestPatchWithSameMajorAndMinor.Patch)
                                 {
                                     changeType = ComponentChangeType.RetrogradePatchVersionNumber;
                                 }
@@ -156,23 +157,23 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                             throw new InvalidOperationException("Unknown " + nameof(ComponentChangeType));
                     }
 
-                    if (predecessorId != null)
+                    if (predecessorVersion != null)
                     {
-                        Console.WriteLine(" Comparing with " + predecessorId);
+                        var predecessorPackageId = new PackageIdentity(thisPackageId.Id, predecessorVersion);
+                        Console.WriteLine(" Comparing with " + predecessorPackageId);
 
-                        INuGetPackage predecessorPackage = await feed.GetPackageAsync(predecessorId).ConfigureAwait(false);
+                        INuGetPackage predecessorPackage = await feed.GetPackageAsync(predecessorPackageId).ConfigureAwait(false);
                         SemanticVersionChange packageChange = await ComparePackages(predecessorPackage, newPackage).ConfigureAwait(false);
                         predecessorPackage.Dispose();
 
                         if (packageChange > maximumAcceptableChange)
                         {
-                            Console.Error.WriteLine($"Package '{thisPackageId.Id}' makes changes requiring a '{packageChange}' version change. The predecessor version is {predecessorId.Version}, and the target version is {thisPackageId.Version}, which is only a '{maximumAcceptableChange}' change");
+                            Console.Error.WriteLine($"Package '{thisPackageId.Id}' makes changes requiring a '{packageChange}' version change. The predecessor version is {predecessorVersion.Version}, and the target version is {thisPackageId.Version}, which is only a '{maximumAcceptableChange}' change");
                             rulesViolated = true;
                         }
                         else
                         {
-                            Console.WriteLine($" Change detected: '{packageChange}', which is acceptable, because the predecessor version is {predecessorId.Version}, and the target version is {thisPackageId.Version}, which is a '{maximumAcceptableChange}' change");
-                            rulesViolated = true;
+                            Console.WriteLine($" Change detected: '{packageChange}', which is acceptable, because the predecessor version is {predecessorVersion.Version}, and the target version is {thisPackageId.Version}, which is a '{maximumAcceptableChange}' change");
                         }
                     }
                 }
@@ -210,9 +211,25 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
             // netstandard1.6 one.
             // However, this is a relatively unusual scenario. I would not expect us to be changing the set of
             // supported target frameworks within a single major version.
-            foreach ((NuGetFramework framework, List<string> predecessorItems) in predecessorItemsByFramework.Where(x => newItemsByFramework.ContainsKey(x.Key)))
+            foreach ((NuGetFramework framework, List<string> allPredecessorItems) in predecessorItemsByFramework.Where(x => newItemsByFramework.ContainsKey(x.Key)))
             {
                 List<string> targetItems = newItemsByFramework[framework];
+
+                // Ignore XML doc files. Addition/removal of these has no runtime impact,
+                List<string> WithoutXmlDocFiles(IEnumerable<string> items)
+                {
+                    var names = items.ToHashSet(StringComparer.OrdinalIgnoreCase);
+                    bool IsXmlDocFile(string name) =>
+                        name.EndsWith(".xml", StringComparison.OrdinalIgnoreCase)
+                        && names.Contains(name[..^4] + ".dll");
+                    return names
+                        .Where(item => !IsXmlDocFile(item))
+                        .ToList();
+                }
+
+                targetItems = WithoutXmlDocFiles(targetItems);
+                List<string> predecessorItems = predecessorItems = WithoutXmlDocFiles(allPredecessorItems);
+
                 bool libItemsRemoved = predecessorItems.Except(targetItems).Any();
 
                 if (libItemsRemoved)
@@ -241,20 +258,27 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                 {
                     Directory.CreateDirectory(predecessorFolder);
                     Directory.CreateDirectory(targetFolder);
-                    var allItems = predecessorItems.Union(targetItems).ToList();
+                    var commonItems = predecessorItems.Intersect(targetItems).ToList();
 
-                    await predecessorPackage.CopyFilesAsync(predecessorFolder, allItems).ConfigureAwait(false);
-                    await newPackage.CopyFilesAsync(targetFolder, allItems).ConfigureAwait(false);
+                    await predecessorPackage.CopyFilesAsync(predecessorFolder, commonItems).ConfigureAwait(false);
+                    await newPackage.CopyFilesAsync(targetFolder, commonItems).ConfigureAwait(false);
 
                     foreach (string libItem in predecessorItems)
                     {
-                        Console.WriteLine(" Comparing " + libItem);
-                        string predecessorPath = predecessorFolder + "\\" + libItem;
-                        string targetPath = targetFolder + "\\" + libItem;
+                        if (libItem.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+                        {
+                            Console.WriteLine(" Comparing " + libItem);
+                            string predecessorPath = predecessorFolder + "\\" + libItem;
+                            string targetPath = targetFolder + "\\" + libItem;
 
-                        SemanticVersionChange changeForThisItem = CheckAssembliesForSemverChanges(predecessorPath, targetPath);
-                        Console.WriteLine("  " + changeForThisItem);
-                        biggestChangeSeen = biggestChangeSeen.AtLeast(changeForThisItem);
+                            SemanticVersionChange changeForThisItem = CheckAssembliesForSemverChanges(predecessorPath, targetPath);
+                            Console.WriteLine("  " + changeForThisItem);
+                            biggestChangeSeen = biggestChangeSeen.AtLeast(changeForThisItem);
+                        }
+                        else
+                        {
+                            Console.WriteLine(" Not a .NET assembly - ignoring " + libItem);
+                        }
                     }
                 }
                 finally

@@ -4,7 +4,7 @@
 
 namespace Endjin.SemVer.DotNetApi.PackageComparison
 {
-    using NuGet.Packaging.Core;
+    using NuGet.Versioning;
 
     /// <summary>
     /// Provides information about the various versions of a library published in a NuGet feed.
@@ -12,9 +12,9 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
     public interface INuGetPublishedLibraryVersions
     {
         /// <summary>
-        /// Gets the identity of the latest published version of this library.
+        /// Gets the latest published version of this library.
         /// </summary>
-        PackageIdentity LatestPublishedVersion { get; }
+        NuGetVersion LatestPublishedVersion { get; }
 
         /// <summary>
         /// Gets the highest major version number of all versions already published.
@@ -45,7 +45,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         /// <see cref="INuGetPublishedLibraryMinorVersions.LatestPublishedVersionWithSameMajor"/>
         /// of 2 (because the latest published version with a major version of 1 is v1.2.20). If
         /// you call the resulting object's
-        /// <see cref="INuGetPublishedLibraryMinorVersions.TryGetLatestVersionWithMinorVersion(int, out PackageIdentity)"/>
+        /// <see cref="INuGetPublishedLibraryMinorVersions.TryGetLatestVersionWithMinorVersion(int, out NuGetVersion)"/>
         /// method with a <c>minorVersion</c> of 0, it will return a
         /// <c>lastestPublishedPatchVersion</c> of 15 (because the latest published version with a
         /// major.minor version of 1.0 is v1.0.15). If you pass a <c>minorVersion</c> of 1, it will

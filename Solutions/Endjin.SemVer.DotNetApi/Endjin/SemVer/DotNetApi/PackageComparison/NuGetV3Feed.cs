@@ -6,6 +6,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using NuGet.Common;
@@ -14,16 +15,18 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
     using NuGet.Packaging.Core;
     using NuGet.Protocol;
     using NuGet.Protocol.Core.Types;
+    using NuGet.Versioning;
 
     /// <summary>
     /// Provides access to a NuGet V3 feed.
     /// </summary>
     internal class NuGetV3Feed : INuGetFeed
     {
+        private readonly SourceCacheContext sourceCacheContext = new SourceCacheContext();
         private readonly string feedUrl;
         private readonly ILogger nuGetLogger;
         private readonly Lazy<SourceRepository> sourceRepository;
-        private readonly Lazy<ListResource> listResource;
+        private readonly Lazy<Task<FindPackageByIdResource>> findByIdResource;
         private readonly ISettings settings = Settings.LoadDefaultSettings(root: null);
 
         /// <summary>
@@ -37,35 +40,29 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
             this.nuGetLogger = nuGetLogger;
 
             this.sourceRepository = new Lazy<SourceRepository>(this.GetSourceRepository);
-            this.listResource = new Lazy<ListResource>(this.GetListResource);
+            this.findByIdResource = new Lazy<Task<FindPackageByIdResource>>(this.GetFindPackageByIdResource);
         }
 
         /// <inheritdoc/>
         public async Task<INuGetPublishedLibraryVersions> GetPublishedVersionsOfLibraryAsync(string packageId)
         {
-            ListResource listResource = this.listResource.Value;
+            FindPackageByIdResource findResource = await this.findByIdResource.Value;
 
-            IEnumerableAsync<IPackageSearchMetadata> x = await listResource.ListAsync(
+            IEnumerable<NuGetVersion> allVersions = await findResource.GetAllVersionsAsync(
                 packageId,
-                prerelease: false,
-                allVersions: true,
-                includeDelisted: false,
-                log: this.nuGetLogger,
-                token: CancellationToken.None).ConfigureAwait(false);
+                this.sourceCacheContext,
+                logger: this.nuGetLogger,
+                cancellationToken: CancellationToken.None).ConfigureAwait(false);
 
-            var packageVersions = new List<PackageIdentity>();
+            var packageVersions = new List<NuGetVersion>();
 
-            IEnumeratorAsync<IPackageSearchMetadata> e = x.GetEnumeratorAsync();
+            IEnumerable<NuGetVersion> nonPrereleaseVersions = allVersions
+                .Where(v => !v.IsPrerelease);
 
-            while (await e.MoveNextAsync().ConfigureAwait(false))
+            foreach (NuGetVersion version in nonPrereleaseVersions)
             {
-                PackageIdentity packageIdentity = e.Current.Identity;
-                Console.WriteLine("Item in feed: " + packageIdentity);
-
-                if (packageIdentity.Id == packageId)
-                {
-                    packageVersions.Add(packageIdentity);
-                }
+                Console.WriteLine($"Item in feed: {packageId}.{version}");
+                packageVersions.Add(version);
             }
 
             return packageVersions.Count == 0
@@ -79,17 +76,15 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
             DownloadResource downloadResource = await this.sourceRepository.Value.GetResourceAsync<DownloadResource>(CancellationToken.None)
                 .ConfigureAwait(false);
 
-            var cacheContext = new SourceCacheContext();
-
             DownloadResourceResult downloadResult = await downloadResource.GetDownloadResourceResultAsync(
                 packageIdentity,
-                new PackageDownloadContext(cacheContext),
+                new PackageDownloadContext(this.sourceCacheContext),
                 SettingsUtility.GetGlobalPackagesFolder(this.settings),
                 this.nuGetLogger,
                 CancellationToken.None)
                 .ConfigureAwait(false);
 
-            return new PackageFromFeed(packageIdentity, downloadResult, cacheContext, this.nuGetLogger);
+            return new PackageFromFeed(packageIdentity, downloadResult, this.sourceCacheContext, this.nuGetLogger);
         }
 
         private SourceRepository GetSourceRepository()
@@ -97,23 +92,27 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
             return Repository.Factory.GetCoreV3(this.feedUrl);
         }
 
-        private ListResource GetListResource()
+        private Task<FindPackageByIdResource> GetFindPackageByIdResource()
         {
-            // It appears to be important that we fetch this ListResource only once, because
-            // otherwise, the second attempt will destroy any cached token for this endpoint!
+            // It's not clear whether we still need to do this lazy once-only initialize. Back when
+            // we were using ListResource, it appeared to be important to fetch it only once,
+            // because otherwise, the second attempt would destroy any cached token for this
+            // endpoint!
             // As far as I can tell, what's happening is that there's some flag that tracks
             // the "we already tried using these credentials once" condition, with the intention
             // being that if you have to make a second attempt, presumably the cached credentials
             // you had were no good and need to be overwritten. It tells the credential provider
             // plugin this by passing a flag telling it that the request is a retry, and that seems
             // to be what causes the existing token to be junked.
-            // The proplem is that this flag doesn't get reset in the event of a successful request
+            // The problem is that this flag doesn't get reset in the event of a successful request
             // so it wrongly interprets any second fetch of a resource as necessarily being a retry
             // caused by an earlier failure.
             // The solution is not to repeat requests unnecessarily. (This is good practice anyway
             // because it's wasteful to repeat requests.)
-            // TODO: is it getting the ListResource once that's the issue? Or getting the SourceRepository?
-            return this.sourceRepository.Value.GetResource<ListResource>();
+            // In fact we never even established whether the original problem was around getting
+            // the ListResource or the SourceRepository, so we don't know whether we definitely
+            // need to make this lazy.
+            return this.sourceRepository.Value.GetResourceAsync<FindPackageByIdResource>();
         }
 
         private class PackageFromFeed : NuGetPackageBase

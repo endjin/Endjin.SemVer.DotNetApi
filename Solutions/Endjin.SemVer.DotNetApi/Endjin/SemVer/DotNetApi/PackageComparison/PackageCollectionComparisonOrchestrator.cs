@@ -250,9 +250,9 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                     biggestChangeSeen = biggestChangeSeen.AtLeast(SemanticVersionChange.Minor);
                 }
 
-                string workingFolder = Path.Combine(Path.GetTempPath(), @"endjin\nupkgversion\" + Guid.NewGuid());
-                string predecessorFolder = workingFolder + @"\before";
-                string targetFolder = workingFolder + @"\after";
+                string workingFolder = Path.Combine(Path.GetTempPath(), "endjin", "nupkgversion", Guid.NewGuid().ToString());
+                string predecessorFolder = Path.Combine(workingFolder, "before");
+                string targetFolder = Path.Combine(workingFolder, "after");
 
                 try
                 {
@@ -268,8 +268,8 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                         if (libItem.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
                         {
                             Console.WriteLine(" Comparing " + libItem);
-                            string predecessorPath = predecessorFolder + "\\" + libItem;
-                            string targetPath = targetFolder + "\\" + libItem;
+                            string predecessorPath = Path.Combine(predecessorFolder, libItem);
+                            string targetPath = Path.Combine(targetFolder, libItem);
 
                             SemanticVersionChange changeForThisItem = CheckAssembliesForSemverChanges(predecessorPath, targetPath);
                             Console.WriteLine("  " + changeForThisItem);

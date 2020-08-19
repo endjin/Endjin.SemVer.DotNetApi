@@ -1,6 +1,4 @@
 mode: "ContinuousDeployment"
 branches:
   master:
-    regex: ^main
-    tag: preview
-    increment: Minor
+    regex: ^main$

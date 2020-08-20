@@ -13,6 +13,7 @@ resources:
       type: github
       name: endjin/Endjin.RecommendedPractices.AzureDevopsPipelines.GitHub
       endpoint: endjin-github
+      ref: feature/fix-packaging-nobuild
 
 jobs:
 - template: templates/build.and.release.yml@recommended_practices
@@ -35,24 +36,6 @@ jobs:
           Write-Host "**** Versions of nupkgversion"
           gci -recurse nupkgversion.dll | % { Write-Host ("{1} => {0}" -f $_.FullName, ([Reflection.AssemblyName]::GetAssemblyName($_.FullName)).Version) }
         displayName: Debug assembly versions after test
-    preCreateNuGetPackages:
-      - task: DotNetCoreCLI@2
-        displayName: 'Create NuGet Packages (custom)'
-        inputs:
-          command: custom
-          custom: pack
-          projects: $(SolutionToBuild)
-          outputDir: '$(Build.ArtifactStagingDirectory)/Packages/$(Build.BuildID)'
-          arguments: '-c $(BuildConfiguration) --no-build --no-restore'
-          versioningScheme: byEnvVar
-          versionEnvVar: GitVersion.SemVer
-          buildProperties: 'EndjinRepositoryUrl="$(Build.Repository.Uri)"'
-      - pwsh: |
-          Write-Host "**** Versions of Endjin.SemVer.DotNetApi"
-          gci -recurse Endjin.SemVer.DotNetApi.dll | % { Write-Host ("{1} => {0}" -f $_.FullName, ([Reflection.AssemblyName]::GetAssemblyName($_.FullName)).Version) }
-          Write-Host "**** Versions of nupkgversion"
-          gci -recurse nupkgversion.dll | % { Write-Host ("{1} => {0}" -f $_.FullName, ([Reflection.AssemblyName]::GetAssemblyName($_.FullName)).Version) }
-        displayName: Debug assembly versions after custom pack
     postPack:
       - pwsh: |
           Write-Host "**** Versions of Endjin.SemVer.DotNetApi"

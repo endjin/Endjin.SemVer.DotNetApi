@@ -23,6 +23,16 @@ jobs:
     service_connection_github: $(Endjin_Service_Connection_GitHub)
     solution_to_build: $(Endjin_Solution_To_Build)
     postBuild:
+      - task: DotNetCoreCLI@2
+        displayName: 'Package global tool'
+        inputs:
+          command: 'pack'
+          projects: $(Build.SourcesDirectory)/Solutions/Endjin.SemVer.DotNetApi.Cli/Endjin.SemVer.DotNetApi.Cli.csproj
+          outputDir: '$(Build.ArtifactStagingDirectory)/Packages/$(Build.BuildID)'
+          nobuild: true
+          versioningScheme: byEnvVar
+          versionEnvVar: GitVersion.SemVer
+          buildProperties: 'EndjinRepositoryUrl="$(Build.Repository.Uri)";Version=$(GitVersion.SemVer);Configuration=Release'
       - pwsh: |
           Write-Host "**** Versions of Endjin.SemVer.DotNetApi"
           gci -recurse Endjin.SemVer.DotNetApi.dll | % { Write-Host ("{1} => {0}" -f $_.FullName, ([Reflection.AssemblyName]::GetAssemblyName($_.FullName)).Version) }

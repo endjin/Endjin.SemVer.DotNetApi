@@ -69,10 +69,10 @@ namespace Endjin.SemVer.DotNetApi.Cli
                     Arity = ArgumentArity.ExactlyOne,
                 });
 
-                cmd.AddArgument(new Argument<Uri>(getDefaultValue: () => new Uri("https://api.nuget.org/v3/index.json") )
+                cmd.AddArgument(new Argument<Uri>(getDefaultValue: () => new Uri("https://api.nuget.org/v3/index.json"))
                 {
                     Name = "package-feed-url",
-                    Description = "Uri of the package feed to compare against.",
+                    Description = "Uri of the package feed to compare against. NuGet.org set by default.",
                     Arity = ArgumentArity.ExactlyOne,
                 });
 
@@ -92,93 +92,6 @@ namespace Endjin.SemVer.DotNetApi.Cli
 
                 return cmd;
             }
-
-            /*Command Environment()
-            {
-                var cmd = new Command(
-                    "compare",
-                    "Manipulate the vellum-cli environment & settings.");
-
-                this.services
-                        .Configure<LoggerFilterOptions>(o => o.MinLevel = logLevel)
-                        .AddSingleton<IHostedCommand, ApiCompareTool>()
-                        .AddSingleton(arguments)
-                        .AddPackageComparison(interactive);*/
-
-                /*var setCmd = new Command(
-                    "set",
-                    "Set vellum-cli environment configuration.");
-
-                setCmd.AddOption(new Option("--username", "Username for the current user.")
-                {
-                    Argument = new Argument<string>
-                    {
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                });
-
-                setCmd.AddOption(new Option("--workspace-path", "The location of your vellum workspace.")
-                {
-                    Argument = new Argument<DirectoryInfo>
-                    {
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                });
-
-                setCmd.AddOption(new Option("--publish-path", "The location for generated output.")
-                {
-                    Argument = new Argument<DirectoryInfo>
-                    {
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                });
-
-                setCmd.AddOption(new Option("--key", "A user-defined setting key.")
-                {
-                    Argument = new Argument<string>
-                    {
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                });
-
-                setCmd.AddOption(new Option("--value", "A user-defined setting value for the specified key.")
-                {
-                    Argument = new Argument<string>
-                    {
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                });
-
-                setCmd.AddValidator(commandResult =>
-                {
-                    var workspace = commandResult.ValueForOption<DirectoryInfo>("workspace-path");
-                    var publish = commandResult.ValueForOption<DirectoryInfo>("publish-path");
-                    var username = commandResult.ValueForOption<string>("username");
-                    var key = commandResult.ValueForOption<string>("key");
-                    var value = commandResult.ValueForOption<string>("value");
-
-                    if (workspace == null && publish == null && username == null && key == null && value == null)
-                    {
-                        return "Please specify at least one option.";
-                    }
-
-                    if ((key != null && value == null) || (key == null && value != null))
-                    {
-                        return "--key & --value are mutually inclusive. Please specify a value for --key AND --value";
-                    }
-
-                    return null;
-                });
-
-                setCmd.Handler = CommandHandler.Create<SetOptions, InvocationContext>(async (options, context) =>
-                {
-                    await setEnvironmentSetting(options, context.Console, context).ConfigureAwait(false);
-                });
-
-                cmd.AddCommand(setCmd);
-
-                return cmd;
-            }*/
         }
     }
 }

@@ -36,7 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Endjin.SemVer.DotNetApi\Endjin.SemVer.DotNetApi.csproj" />
+    <ProjectReference Include="..\Endjin.SemVer.DotNetApi\Endjin.SemVer.DotNetApi.csproj">
+      <Private>true</Private>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>

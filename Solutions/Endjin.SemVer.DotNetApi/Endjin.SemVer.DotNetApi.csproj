@@ -12,6 +12,7 @@
     <PackageDescription>A class library for comparing two NuGet packages and determining whether differences trigger SemVer Major, Minor or Patch changes</PackageDescription>
     <PackageTags>semver-dotnetapi pr-autoflow devops</PackageTags>
     <PackageReleaseNotes></PackageReleaseNotes>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

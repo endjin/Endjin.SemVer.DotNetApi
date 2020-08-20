@@ -23,6 +23,13 @@ jobs:
     service_connection_github: $(Endjin_Service_Connection_GitHub)
     solution_to_build: $(Endjin_Solution_To_Build)
     postBuild:
+      - pwsh: |
+          Write-Host "**** Versions of Endjin.SemVer.DotNetApi"
+          gci -recurse Endjin.SemVer.DotNetApi.dll | % { Write-Host ("{1} => {0}" -f $_.FullName, ([Reflection.AssemblyName]::GetAssemblyName($_.FullName)).Version) }
+          Write-Host "**** Versions of nupkgversion"
+          gci -recurse nupkgversion.dll | % { Write-Host ("{1} => {0}" -f $_.FullName, ([Reflection.AssemblyName]::GetAssemblyName($_.FullName)).Version) }
+        displayName: Debug assembly versions after build
+    postPack:
       - task: DotNetCoreCLI@2
         displayName: 'Package global tool'
         inputs:
@@ -33,13 +40,6 @@ jobs:
           versioningScheme: byEnvVar
           versionEnvVar: GitVersion.SemVer
           buildProperties: 'EndjinRepositoryUrl="$(Build.Repository.Uri)";Version=$(GitVersion.SemVer);Configuration=Release'
-      - pwsh: |
-          Write-Host "**** Versions of Endjin.SemVer.DotNetApi"
-          gci -recurse Endjin.SemVer.DotNetApi.dll | % { Write-Host ("{1} => {0}" -f $_.FullName, ([Reflection.AssemblyName]::GetAssemblyName($_.FullName)).Version) }
-          Write-Host "**** Versions of nupkgversion"
-          gci -recurse nupkgversion.dll | % { Write-Host ("{1} => {0}" -f $_.FullName, ([Reflection.AssemblyName]::GetAssemblyName($_.FullName)).Version) }
-        displayName: Debug assembly versions after build
-    postPack:
       - pwsh: |
           Write-Host "**** Versions of Endjin.SemVer.DotNetApi"
           gci -recurse Endjin.SemVer.DotNetApi.dll | % { Write-Host ("{1} => {0}" -f $_.FullName, ([Reflection.AssemblyName]::GetAssemblyName($_.FullName)).Version) }

@@ -13,7 +13,6 @@ resources:
       type: github
       name: endjin/Endjin.RecommendedPractices.AzureDevopsPipelines.GitHub
       endpoint: endjin-github
-      ref: feature/fix-packaging-nobuild
 
 jobs:
 - template: templates/build.and.release.yml@recommended_practices

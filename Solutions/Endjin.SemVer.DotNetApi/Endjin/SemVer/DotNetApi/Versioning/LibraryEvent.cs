@@ -10,7 +10,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
     public class LibraryEvent
     {
         /// <summary>
-        /// Creates a <see cref="LibraryEvent"/>.
+        /// Initializes a new instance of the <see cref="LibraryEvent"/> class.
         /// </summary>
         /// <param name="name">The event's <see cref="Name"/>.</param>
         /// <param name="type">The events's <see cref="Type"/>.</param>

@@ -26,7 +26,7 @@ namespace Endjin.SemVer.DotNetApi.Cli
         private readonly ILogger<ApiCompareTool> logger;
 
         /// <summary>
-        /// Creates a <see cref="ApiCompareTool"/>.
+        /// Initializes a new instance of the <see cref="ApiCompareTool"/> class.
         /// </summary>
         /// <param name="arguments">The command line arguments.</param>
         /// <param name="orchestrator">The orchestrator that does the underlying work.</param>

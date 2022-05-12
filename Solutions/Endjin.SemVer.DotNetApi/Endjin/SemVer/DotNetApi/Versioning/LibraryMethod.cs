@@ -13,7 +13,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
     public class LibraryMethod : LibraryMethodBase
     {
         /// <summary>
-        /// Creates a <see cref="LibraryMethod"/>.
+        /// Initializes a new instance of the <see cref="LibraryMethod"/> class.
         /// </summary>
         /// <param name="name">The method's <see cref="Name"/>.</param>
         /// <param name="returnType">

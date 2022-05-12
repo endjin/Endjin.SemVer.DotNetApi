@@ -56,7 +56,7 @@ namespace Endjin.SemVer.DotNetApi.Cli
 
             RootCommand Root()
             {
-                var cmd =  new RootCommand
+                var cmd = new RootCommand
                 {
                     Name = "nupkgversion",
                     Description = "Diff two NuGet packages and generate a Semantic Version Increment [Major | Minor | Patch].",

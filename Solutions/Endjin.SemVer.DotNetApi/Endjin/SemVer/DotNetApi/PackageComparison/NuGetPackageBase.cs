@@ -20,7 +20,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
     internal abstract class NuGetPackageBase : INuGetPackage
     {
         /// <summary>
-        /// Create a <see cref="NuGetPackageBase"/>.
+        /// Initializes a new instance of the <see cref="NuGetPackageBase"/> class.
         /// </summary>
         /// <param name="identity">The <see cref="Identity"/>.</param>
         /// <param name="nuGetLogger">NuGet library logger.</param>

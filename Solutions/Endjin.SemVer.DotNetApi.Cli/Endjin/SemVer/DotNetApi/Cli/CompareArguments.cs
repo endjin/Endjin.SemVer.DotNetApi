@@ -17,7 +17,7 @@ namespace Endjin.SemVer.DotNetApi.Cli
         private string verbosity;
 
         /// <summary>
-        /// Create a <see cref="CompareArguments"/>.
+        /// Initializes a new instance of the <see cref="CompareArguments"/> class.
         /// </summary>
         /// <param name="packageFeedUrl">The NuGet <see cref="PackageFeedUrl"/>.</param>
         /// <param name="packageDirectory">The <see cref="PackageDirectory"/>.</param>

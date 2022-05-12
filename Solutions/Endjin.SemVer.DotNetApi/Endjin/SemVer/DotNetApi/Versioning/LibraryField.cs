@@ -10,7 +10,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
     public class LibraryField
     {
         /// <summary>
-        /// Creates a <see cref="LibraryField"/>.
+        /// Initializes a new instance of the <see cref="LibraryField"/> class.
         /// </summary>
         /// <param name="name">The field's <see cref="Name"/>.</param>
         /// <param name="type">The field's <see cref="Type"/>.</param>

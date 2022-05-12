@@ -37,12 +37,12 @@ namespace Endjin.Testing.CodeGen
 
         public IReadOnlyList<EventGenerator> Events => this.events;
 
-        public void AddMethod(string name, string returnType, params (string name, string type)[] parameters)
+        public void AddMethod(string name, string returnType, params (string Name, string Type)[] parameters)
         {
             this.methods.Add(new MethodGenerator(name, returnType, parameters));
         }
 
-        public void AddConstructor(params (string name, string type)[] parameters)
+        public void AddConstructor(params (string Name, string Type)[] parameters)
         {
             this.constructors.Add(new ConstructorGenerator(parameters));
         }

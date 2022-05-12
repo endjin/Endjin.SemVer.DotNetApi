@@ -13,7 +13,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         private static readonly char[] TypeNameDelimiters = { '.', '+' };
 
         /// <summary>
-        /// Creates a <see cref="LibraryTypeReference"/>.
+        /// Initializes a new instance of the <see cref="LibraryTypeReference"/> class.
         /// </summary>
         /// <param name="assembly">The <see cref="Assembly"/>.</param>
         /// <param name="fullName">The <see cref="FullName"/>.</param>

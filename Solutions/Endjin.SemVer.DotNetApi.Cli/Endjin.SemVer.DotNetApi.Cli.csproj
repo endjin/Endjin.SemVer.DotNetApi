@@ -1,42 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
-  
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <NoWarn>RCS1090; SA1600; CS1591; CS1587</NoWarn>
-  </PropertyGroup>
+	<Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
 
-  <PropertyGroup>
-    <Authors>endjin</Authors>
-    <Product>Endjin.SemVer.DotNetApi</Product>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<NoWarn>RCS1090; SA1600; CS1591; CS1587</NoWarn>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <PackageId>nupkgversion</PackageId>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageDescription>nupkgversion is a .NET Global Tools for comparing two NuGet packages and determining whether differences trigger SemVer Major, Minor or Patch changes</PackageDescription>
-    <PackageTags>nupkgversion pr-autoflow devops</PackageTags>
-    <PackageReleaseNotes></PackageReleaseNotes>
-    <PackAsTool>true</PackAsTool>
-    <ToolCommandName>nupkgversion</ToolCommandName>
-    <AssemblyName>nupkgversion</AssemblyName>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Authors>endjin</Authors>
+		<Product>Endjin.SemVer.DotNetApi</Product>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Endjin.RecommendedPractices" Version="1.1.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.7" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.7" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.7" />
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20371.2" />
-  </ItemGroup>
+	<PropertyGroup>
+		<PackageId>nupkgversion</PackageId>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageDescription>nupkgversion is a .NET Global Tools for comparing two NuGet packages and determining whether differences trigger SemVer Major, Minor or Patch changes</PackageDescription>
+		<PackageTags>nupkgversion pr-autoflow devops</PackageTags>
+		<PackageReleaseNotes></PackageReleaseNotes>
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>nupkgversion</ToolCommandName>
+		<AssemblyName>nupkgversion</AssemblyName>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Endjin.SemVer.DotNetApi\Endjin.SemVer.DotNetApi.csproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+		<RestoreLockedMode Condition="$(ContinuousIntegrationBuild) == 'true'">true</RestoreLockedMode>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+		<PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20371.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Endjin.SemVer.DotNetApi\Endjin.SemVer.DotNetApi.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -12,7 +12,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
     public class LibraryConstructor : LibraryMethodBase
     {
         /// <summary>
-        /// Creates a <see cref="LibraryMethod"/>.
+        /// Initializes a new instance of the <see cref="LibraryConstructor"/> class.
         /// </summary>
         /// <param name="parameters">
         /// The constructor's <see cref="LibraryMethodBase.Parameters"/>, or <c>null</c> if it has none.

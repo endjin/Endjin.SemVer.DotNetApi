@@ -30,7 +30,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         private readonly ISettings settings = Settings.LoadDefaultSettings(root: null);
 
         /// <summary>
-        /// Create a <see cref="NuGetV3Feed"/>.
+        /// Initializes a new instance of the <see cref="NuGetV3Feed"/> class.
         /// </summary>
         /// <param name="feedUrl">The NuGet V3 feed URl.</param>
         /// <param name="nuGetLogger">The NuGet logger.</param>

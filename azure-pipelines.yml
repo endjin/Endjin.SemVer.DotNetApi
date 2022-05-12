@@ -24,7 +24,7 @@ jobs:
     service_connection_github: $(Endjin_Service_Connection_GitHub)
     solution_to_build: $(Endjin_Solution_To_Build)
     netSdkVersion: '6.x'
-    nupkgversionToolPath: 'dotnet $(Build.SourcesDirectory)/Solutions/Endjin.SemVer.DotNetApi.Cli/bin/$(Configuration)/net6.0/nupkgversion.dll'
+    nupkgversionToolPath: 'dotnet $(Build.SourcesDirectory)/Solutions/Endjin.SemVer.DotNetApi.Cli/bin/$(BuildConfiguration)/net6.0/nupkgversion.dll'
     postBuild:
       - pwsh: |
           Write-Host "**** Versions of Endjin.SemVer.DotNetApi"

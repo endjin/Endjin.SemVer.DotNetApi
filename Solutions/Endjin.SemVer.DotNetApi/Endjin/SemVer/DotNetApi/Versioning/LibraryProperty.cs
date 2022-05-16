@@ -10,7 +10,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
     public class LibraryProperty
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LibraryProperty"/> class.
+        /// Create a <see cref="LibraryProperty"/>.
         /// </summary>
         /// <param name="name">The property's <see cref="Name"/>.</param>
         /// <param name="type">The property's <see cref="Type"/>.</param>

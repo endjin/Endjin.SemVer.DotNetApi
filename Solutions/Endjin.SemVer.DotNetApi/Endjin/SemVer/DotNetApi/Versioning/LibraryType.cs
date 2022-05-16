@@ -19,7 +19,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         private static readonly LibraryField[] EmptyFields = { };
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LibraryType"/> class.
+        /// Create a <see cref="LibraryType"/>.
         /// </summary>
         /// <param name="fullName">The <see cref="FullName"/>.</param>
         /// <param name="constructorsAdded">The <see cref="ConstructorsAdded"/>.</param>

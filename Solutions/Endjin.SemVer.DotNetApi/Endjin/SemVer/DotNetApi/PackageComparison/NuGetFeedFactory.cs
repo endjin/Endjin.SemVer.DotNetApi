@@ -16,7 +16,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         private readonly NuGet.Common.ILogger nuGetLogger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NuGetFeedFactory"/> class.
+        /// Create a <see cref="NuGetFeedFactory"/>.
         /// </summary>
         /// <param name="serviceProvider">
         /// DI service provider.

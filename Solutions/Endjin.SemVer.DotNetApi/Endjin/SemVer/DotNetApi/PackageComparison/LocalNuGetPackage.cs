@@ -17,7 +17,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         private PackageReaderBase reader;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocalNuGetPackage"/> class.
+        /// Create a <see cref="LocalNuGetPackage"/>.
         /// </summary>
         /// <param name="packageInfo">The package information.</param>
         /// <param name="nuGetLogger">The NuGet logger.</param>

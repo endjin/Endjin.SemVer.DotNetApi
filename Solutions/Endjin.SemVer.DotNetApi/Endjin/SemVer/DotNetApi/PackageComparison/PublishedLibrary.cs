@@ -16,7 +16,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         private readonly Dictionary<int, INuGetPublishedLibraryMinorVersions> latestMinorsByMajor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PublishedLibrary"/> class.
+        /// Create a <see cref="PublishedLibrary"/>.
         /// </summary>
         /// <param name="publishedVersions">
         /// The versions of this library that have been published.
@@ -56,7 +56,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
             private readonly Dictionary<int, NuGetVersion> latestPatchesByMinor;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="MinorVersions"/> class.
+            /// Create a <see cref="MinorVersions"/>.
             /// </summary>
             /// <param name="publishedVersions">
             /// The minor versions that have been published.

@@ -21,14 +21,14 @@
 
   <ItemGroup>
     <PackageReference Include="Endjin.ApiChange" Version="0.1.0" />
-    <PackageReference Include="Endjin.RecommendedPractices" Version="1.1.0">
+    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.7" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.7" />
-    <PackageReference Include="NuGet.Credentials" Version="5.7.0" />
-    <PackageReference Include="System.Interactive" Version="4.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+    <PackageReference Include="NuGet.Credentials" Version="6.2.0" />
+    <PackageReference Include="System.Interactive" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -16,7 +16,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         private readonly Dictionary<int, INuGetPublishedLibraryMinorVersions> latestMinorsByMajor;
 
         /// <summary>
-        /// Create a <see cref="PublishedLibrary"/>.
+        /// Initializes a new instance of the <see cref="PublishedLibrary"/> class.
         /// </summary>
         /// <param name="publishedVersions">
         /// The versions of this library that have been published.
@@ -56,7 +56,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
             private readonly Dictionary<int, NuGetVersion> latestPatchesByMinor;
 
             /// <summary>
-            /// Create a <see cref="MinorVersions"/>.
+            /// Initializes a new instance of the <see cref="MinorVersions"/> class.
             /// </summary>
             /// <param name="publishedVersions">
             /// The minor versions that have been published.
@@ -67,7 +67,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
                     .GroupBy(v => v.Minor)
                     .ToDictionary(
                         g => g.Key,
-                        g => g.MaxBy(v => v.Patch).Single());
+                        g => g.MaxByWithTies(v => v.Patch).Single());
 
                 this.LatestPublishedVersionWithSameMajor = this.latestPatchesByMinor[this.latestPatchesByMinor.Keys.Max()];
             }

@@ -6,11 +6,11 @@ namespace Endjin.Testing.CodeGen
 {
     public abstract class MethodGeneratorBase
     {
-        protected MethodGeneratorBase(params (string name, string type)[] parameters)
+        protected MethodGeneratorBase(params (string Name, string Type)[] parameters)
         {
             this.Parameters = parameters;
         }
 
-        public (string name, string type)[] Parameters { get; }
+        public (string Name, string Type)[] Parameters { get; }
     }
 }

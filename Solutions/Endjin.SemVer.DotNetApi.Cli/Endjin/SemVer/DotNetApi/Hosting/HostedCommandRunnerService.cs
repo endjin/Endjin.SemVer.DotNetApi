@@ -28,7 +28,7 @@ namespace Endjin.SemVer.DotNetApi.Hosting
         private Task runCommandsTask;
 
         /// <summary>
-        /// Creates a <see cref="HostedCommandRunnerService"/>.
+        /// Initializes a new instance of the <see cref="HostedCommandRunnerService"/> class.
         /// </summary>
         /// <param name="command">The command to run.</param>
         /// <param name="applicationLifetime">Enables us to request shutdown.</param>

@@ -11,7 +11,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
     public class LibraryAssemblyReference
     {
         /// <summary>
-        /// Creates a <see cref="LibraryAssemblyReference"/>.
+        /// Initializes a new instance of the <see cref="LibraryAssemblyReference"/> class.
         /// </summary>
         /// <param name="shortName">The <see cref="ShortName"/>.</param>
         /// <param name="fullName">The <see cref="FullName"/>.</param>

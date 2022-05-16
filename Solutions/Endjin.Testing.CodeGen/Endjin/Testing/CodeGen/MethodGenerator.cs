@@ -9,7 +9,7 @@ namespace Endjin.Testing.CodeGen
         public MethodGenerator(
             string name,
             string returnType,
-            params (string name, string type)[] parameters)
+            params (string Name, string Type)[] parameters)
             : base(parameters)
         {
             this.Name = name;

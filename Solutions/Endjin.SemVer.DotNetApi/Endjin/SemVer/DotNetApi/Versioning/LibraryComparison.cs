@@ -208,12 +208,12 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         private class ReferenceCache
         {
             private readonly Dictionary<MetadataToken, LibraryAssemblyReference> assemblyRefs = new Dictionary<MetadataToken, LibraryAssemblyReference>();
-            private readonly Dictionary<(LibraryAssemblyReference lib, string fullName), LibraryTypeReference> typeRefs = new Dictionary<(LibraryAssemblyReference lib, string fullName), LibraryTypeReference>();
+            private readonly Dictionary<(LibraryAssemblyReference Lib, string FullName), LibraryTypeReference> typeRefs = new Dictionary<(LibraryAssemblyReference Lib, string FullName), LibraryTypeReference>();
 
             public LibraryTypeReference GetTypeReference(TypeReference typeReference)
             {
                 LibraryAssemblyReference assemblyReference = this.GetAssemblyReference((AssemblyNameReference)typeReference.Scope);
-                (LibraryAssemblyReference lib, string fullName) key = (assemblyReference, typeReference.FullName);
+                (LibraryAssemblyReference Lib, string FullName) key = (assemblyReference, typeReference.FullName);
 
                 if (!this.typeRefs.TryGetValue(key, out LibraryTypeReference result))
                 {

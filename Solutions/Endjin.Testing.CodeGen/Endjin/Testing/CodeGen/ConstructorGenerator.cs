@@ -6,7 +6,7 @@ namespace Endjin.Testing.CodeGen
 {
     public class ConstructorGenerator : MethodGeneratorBase
     {
-        public ConstructorGenerator((string name, string type)[] parameters)
+        public ConstructorGenerator((string Name, string Type)[] parameters)
             : base(parameters)
         {
         }

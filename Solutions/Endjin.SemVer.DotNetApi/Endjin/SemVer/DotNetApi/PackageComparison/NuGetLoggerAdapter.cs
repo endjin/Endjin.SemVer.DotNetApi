@@ -17,7 +17,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         private readonly ILogger<NuGetLoggerAdapter> logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NuGetLoggerAdapter"/> class.
+        /// Create a <see cref="NuGetLoggerAdapter"/>.
         /// </summary>
         /// <param name="logger">The underlying logger.</param>
         public NuGetLoggerAdapter(ILogger<NuGetLoggerAdapter> logger)

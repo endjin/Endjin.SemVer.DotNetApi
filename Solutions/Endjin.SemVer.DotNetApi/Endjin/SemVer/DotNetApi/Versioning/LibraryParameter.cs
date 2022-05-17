@@ -15,7 +15,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
         public static readonly LibraryParameter[] None = { };
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LibraryParameter"/> class.
+        /// Create a <see cref="LibraryParameter"/>.
         /// </summary>
         /// <param name="name">The parameter's <see cref="Name"/>.</param>
         /// <param name="type">The parameter's <see cref="Type"/>.</param>

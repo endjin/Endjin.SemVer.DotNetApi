@@ -35,7 +35,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         private readonly INuGetLocalPackageEnumerator packageEnumerator;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PackageCollectionComparisonOrchestrator"/> class.
+        /// Create a <see cref="PackageCollectionComparisonOrchestrator"/>.
         /// </summary>
         /// <param name="feedFactory">Source of NuGet feeds.</param>
         /// <param name="packageEnumerator">Enumerate local NuGet packages.</param>

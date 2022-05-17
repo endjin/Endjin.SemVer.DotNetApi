@@ -19,7 +19,7 @@ namespace Endjin.SemVer.DotNetApi.PackageComparison
         private readonly ILogger nuGetLogger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NuGetLocalPackageEnumerator"/> class.
+        /// Create a <see cref="NuGetLocalPackageEnumerator"/>.
         /// </summary>
         /// <param name="nuGetLogger">The NuGet-style logger.</param>
         public NuGetLocalPackageEnumerator(ILogger nuGetLogger)

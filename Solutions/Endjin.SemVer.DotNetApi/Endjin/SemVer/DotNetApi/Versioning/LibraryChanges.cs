@@ -13,7 +13,7 @@ namespace Endjin.SemVer.DotNetApi.Versioning
     public class LibraryChanges
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LibraryChanges"/> class.
+        /// Create a <see cref="LibraryChanges"/>.
         /// </summary>
         /// <param name="typesAdded">The <see cref="TypesAdded"/>.</param>
         /// <param name="typesChanged">The <see cref="TypesChanged"/>.</param>

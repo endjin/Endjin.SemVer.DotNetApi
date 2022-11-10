@@ -15,13 +15,14 @@ resources:
       endpoint: endjin-github
 
 jobs:
-- template: templates/build.and.release.yml@recommended_practices
+- template: templates/build.and.release.scripted.yml@recommended_practices
   parameters:
     vmImage: 'ubuntu-latest'
     service_connection_nuget_org: $(Endjin_Service_Connection_NuGet_Org)
     service_connection_github: $(Endjin_Service_Connection_GitHub)
     solution_to_build: $(Endjin_Solution_To_Build)
     netSdkVersion: '6.x'
+    compileTasksServiceConnection: endjin-acr-reader
     # Allow the path to nupkgversionToolPath to be overridden. As nupkgversionToolPath is part of the recommended build, we get caught in a boostrapping loop
     # when we need to make updates to the tool. We enable the build to make use of the current build artefact version of the tool.
     nupkgversionToolPath: 'dotnet $(Build.SourcesDirectory)/Solutions/Endjin.SemVer.DotNetApi.Cli/bin/$(BuildConfiguration)/net6.0/nupkgversion.dll'

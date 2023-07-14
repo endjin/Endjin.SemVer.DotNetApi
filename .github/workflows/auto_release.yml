@@ -62,6 +62,16 @@ jobs:
             core.info("labels: " + JSON.stringify(labels.data))
             if ( labels.data.map(l => l.name).includes("no_release") ) {
               core.info("Label found")
+              if ( labels.data.map(l => l.name).includes("pending_release") ) {
+                // Remove the 'pending_release' label
+                await github.rest.issues.removeLabel({
+                  owner: context.payload.repository.owner.login,
+                  repo: context.payload.repository.name,
+                  issue_number: context.payload.pull_request.number,
+                  name: 'pending_release'
+                })
+              }
+              
               return true
             }
             return false
@@ -118,11 +128,13 @@ jobs:
 
           releasePendingPrDetails = pulls.data.items.
                             filter(function (x) { return x.labels.map(l=>l.name).includes('pending_release') }).
+                            filter(function (x) { return !x.labels.map(l=>l.name).includes('no_release') }).
                             map(p=>`#${p.number} '${p.title}' in ${p.repository_url}`);
           core.info(`releasePendingPrDetails: ${JSON.stringify(releasePendingPrDetails)}`);
 
           const release_pending_prs = pulls.data.items.
                                         filter(function (x) { return x.labels.map(l=>l.name).includes('pending_release') }).
+                                        filter(function (x) { return !x.labels.map(l=>l.name).includes('no_release') }).
                                         map(p=>p.number);
           core.info(`release_pending_prs: ${JSON.stringify(release_pending_prs)}`);
           core.setOutput('is_release_pending', (release_pending_prs.length > 0));
@@ -164,7 +176,7 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          return ( '${{ steps.is_human_pr.outputs.result }}' == 'True' || '${{ steps.watch_dependabot_prs.outputs.is_complete }}' == 'True') && '${{ steps.get_release_pending_pr_list.outputs.is_release_pending }}' == 'True'
+          return ( '${{ steps.is_human_pr.outputs.result }}' == 'true' || '${{ steps.watch_dependabot_prs.outputs.is_complete }}' == 'True') && '${{ steps.get_release_pending_pr_list.outputs.is_release_pending }}' == 'true'
 
     - name: Display job outputs
       run: |
@@ -199,7 +211,6 @@ jobs:
       id: run_gitversion
       run: |
         pwsh -noprofile -c 'dotnet-gitversion /diag'
-        pwsh -noprofile -c '(dotnet-gitversion | ConvertFrom-Json).psobject.properties | % { echo ("{0}={1}" -f $_.name, $_.value) >> $GITHUB_OUTPUT }'
 
     - name: Generate token
       id: generate_token
@@ -217,7 +228,7 @@ jobs:
           const tag = await github.request(('POST ' + uri_path), {
             owner: context.payload.repository.owner.login,
             repo: context.payload.repository.name,
-            ref: 'refs/tags/${{ steps.run_gitversion.outputs.MajorMinorPatch }}',
+            ref: 'refs/tags/${{ env.GitVersion_MajorMinorPatch }}',
             sha: '${{ needs.lookup_default_branch.outputs.head_commit }}'
           })
 
